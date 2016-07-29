@@ -7,14 +7,14 @@ def get_secret_word
 		abort "Вы не ввели слово для игры"
 	end
 
-	return secret_word.split("")
+	return secret_word.downcase.split("")
 end
 
 def get_user_input
 	letter = ""
 
 	while letter == "" do
-		letter = STDIN.gets.encode("UTF-8").downcase.chomp
+		letter = STDIN.gets.encode("UTF-8").chomp
 	end
 
 	return letter
@@ -39,7 +39,6 @@ def check_result(user_input, secret_word, good_letters, bad_letters)
 			#Условие когда отгадано все слово	
 			#uniq - извлечение только уникальных букв
 			# Если длинна уникальных букв == к-ву хороших букв
-			
 			return 1
 		else
 			return 0
@@ -50,8 +49,40 @@ def check_result(user_input, secret_word, good_letters, bad_letters)
 	end
 end
 
-def print_status
+def get_word_for_print(secret_word, good_letters)
+	result = ""
 
+	for letter in secret_word do
+		if good_letters.include? letter
+			result += letter + " "
+		else
+			result += "__ "
+		end
+	end
 
+	return result
+end
 
+def print_status(secret_word, good_letters, bad_letters, errors)
+	#1. выводить загаданное слово (как в поле чудес)
+	#2. информация об ошибках и уже названные буквы
+	#3 ошибок > 7 сообщить о поражении
+	#4. слово угадано - сообщить о победе
+	puts "\nСлово: " + get_word_for_print(secret_word, good_letters)
+
+	puts "Ошибки (#{errors}): #{bad_letters.join(", ")}"
+
+	if errors == 7
+		puts "Вы проиграли :("
+	else
+		if secret_word.uniq.size == good_letters.size
+			puts "\n\nПоздравляем! Вы выиграли!\n\n"
+		else
+			puts "У вас осталось попыток: " + (7-errors).to_s
+		end
+	end
+end
+
+def clear_screen
+	system "clear"
 end

@@ -1,5 +1,7 @@
 require "./methods.rb"
 
+clear_screen
+
 puts "Игра Виселица. ver.1.0"
 
 secret_word = get_secret_word
@@ -21,7 +23,7 @@ while errors < 7 do
 
 	if (result == -1)
 		errors += 1
-	else (result == 1)
+	elsif (result == 1)
 		break
 	end
 end
